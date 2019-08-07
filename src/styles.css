@@ -17,9 +17,10 @@ body {
   line-height: 1.5;
   color: #24292e;
   background-image: url('./assets/form-background.jpg');
+  background-repeat: repeat;
   background-color: #cccccc;
   background-position: center;
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat; */
   background-size: cover;
 }
 

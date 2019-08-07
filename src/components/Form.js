@@ -38,6 +38,15 @@ function LoginForm({ values, errors, touched, isSubmitting, status }) {
                     <option value="backend">Back End Engineer</option>
                     <option value="uxdesign">UX Designer</option>
                 </Field>
+                <Field
+                    component="textarea"
+                    type="text"
+                    name="notes"
+                    placeholder="Notes"
+                />
+                {touched.notes && errors.notes && (
+                    <p className="error">{errors.notes}</p>
+                )}
                 <label className="checkbox-container">
                     Accept Terms of Service
                 <Field type="checkbox" name="tos" checked={values.tos} />
@@ -61,24 +70,29 @@ function LoginForm({ values, errors, touched, isSubmitting, status }) {
 }
 
 const FormikLoginForm = withFormik({
-    mapPropsToValues({ name, email, password, tos, role }) {
+    mapPropsToValues({ name, email, password, tos, role, notes }) {
         return {
             name: name || "",
             email: email || "",
             password: password || "",
             tos: tos || false,
-            role: role || ""
+            role: role || "",
+            notes: notes || ""
         };
     },
     validationSchema: Yup.object().shape({
-        name: Yup.string(),
+        name: Yup.string()
+            .min(2, "Too short!")
+            .max(50, "Too long!")
+            .required(),
         email: Yup.string()
             .email("Email not valid")
             .required("Email is required"),
         password: Yup.string()
             .min(8, "Password must be 8 characters or longer")
             .required("Password is required"),
-        tos: Yup.bool(),
+        tos: Yup.bool().required(),
+        notes: Yup.string()
         
     }),
     handleSubmit(values, { setStatus, resetForm, setErrors, setSubmitting }) {
