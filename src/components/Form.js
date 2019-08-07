@@ -5,12 +5,12 @@ import * as Yup from "yup";
 import axios from "axios";
 
 function LoginForm({ values, errors, touched, isSubmitting, status }) {
-    const [user, setUser] = useState([]);
-    console.log(user);
+    const [users, setUsers] = useState([]);
+    console.log(users);
 
     useEffect(() => {
         if (status) {
-            setUser([...user, status]);
+            setUsers([...users, status]);
         }
     }, [status]);
 
@@ -45,9 +45,17 @@ function LoginForm({ values, errors, touched, isSubmitting, status }) {
                 </label>
                 <button type="submit" disabled={isSubmitting}>Submit</button>
             </Form>
-            {user.map(user => (
-                <p key={user.id}>{user.name}</p>
-            ))}
+            {users.map(user => {
+                return (
+                    <div>
+                        <h1 key={user.id}>{user.name}</h1>
+                        <p>{user.email}</p>
+                        <p>{user.role}</p>
+                    </div>
+                )
+            }
+
+            )}
         </div>
     );
 }
@@ -80,7 +88,8 @@ const FormikLoginForm = withFormik({
             axios
                 .post("https://reqres.in/api/users", values)
                 .then(res => {
-                    console.log(res); // Data was created successfully and logs to console
+                    console.log(res);
+                    setStatus(res.data) // Data was created successfully and logs to console
                     resetForm();
                     setSubmitting(false);
                 })
